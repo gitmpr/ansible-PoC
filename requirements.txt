@@ -1,0 +1,14 @@
+# Phase 1 control-node tooling: plain ansible-core in a venv, so the
+# playbook itself gets proven out with the simplest possible debugging
+# surface before anything else is layered on top.
+#
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+#   ansible-galaxy collection install -r requirements.yml
+#
+# Phase 2 (later, once the playbook is verified working): swap the
+# execution engine to ansible-navigator running a Podman-built Execution
+# Environment (ansible-builder), instead of this venv's ansible-core
+# directly. That adds ansible-builder + ansible-navigator + an
+# execution-environment.yml at that point — not needed yet.
+ansible-core>=2.16,<2.17
+ansible-lint>=24.2

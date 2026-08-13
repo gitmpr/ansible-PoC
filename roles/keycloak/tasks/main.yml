@@ -1,0 +1,44 @@
+---
+- name: Install podman
+  ansible.builtin.dnf:
+    name: podman
+    state: present
+
+- name: Create keycloak data directory
+  ansible.builtin.file:
+    path: "{{ keycloak_data_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Template keycloak systemd unit
+  ansible.builtin.template:
+    src: keycloak.service.j2
+    dest: /etc/systemd/system/keycloak.service
+    mode: "0644"
+  notify: Restart keycloak
+
+- name: Start and enable keycloak service
+  ansible.builtin.systemd:
+    name: keycloak
+    daemon_reload: true
+    state: started
+    enabled: true
+
+- name: Wait for keycloak to become ready
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ keycloak_http_port }}/health/ready"
+    status_code: 200
+  register: keycloak_health
+  until: keycloak_health.status == 200
+  retries: 30
+  delay: 5
+
+- name: Create demo realm
+  community.general.keycloak_realm:
+    auth_keycloak_url: "http://127.0.0.1:{{ keycloak_http_port }}"
+    auth_username: "{{ keycloak_admin_user }}"
+    auth_password: "{{ keycloak_admin_password }}"
+    auth_realm: master
+    realm: "{{ keycloak_demo_realm }}"
+    enabled: true
+    state: present

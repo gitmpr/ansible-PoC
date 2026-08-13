@@ -1,0 +1,12 @@
+---
+# The freeipa.ansible_freeipa role installs the ipa-server package and its
+# own dependencies itself; python3-dbus is the one prerequisite it expects
+# to already be present on the target.
+- name: Install FreeIPA server prerequisites
+  ansible.builtin.dnf:
+    name: python3-dbus
+    state: present
+
+- name: Run the freeipa.ansible_freeipa ipaserver role
+  ansible.builtin.include_role:
+    name: freeipa.ansible_freeipa.ipaserver

@@ -1,0 +1,6 @@
+---
+keycloak_version: "24.0.5"
+keycloak_admin_user: admin
+keycloak_admin_password: "{{ vault_keycloak_admin_password }}"
+keycloak_http_port: 8080
+keycloak_demo_realm: poc-demo

@@ -1,0 +1,11 @@
+---
+# Variable names here match what the freeipa.ansible_freeipa collection's
+# ipaserver role expects (see concepts.md). Passwords come from the vault
+# (inventory/group_vars/all/vault.yml).
+ipaserver_domain: "{{ poc_domain }}"
+ipaserver_realm: "{{ poc_domain | upper }}"
+ipaserver_hostname: "{{ inventory_hostname }}"
+ipaserver_setup_dns: false
+ipaserver_no_ntp: true
+ipaadmin_password: "{{ vault_ipaadmin_password }}"
+ipadm_password: "{{ vault_ipadm_password }}"

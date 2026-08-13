@@ -1,0 +1,5 @@
+---
+# Intentionally empty — this role's variables are set at the group level in
+# inventory/group_vars/ipa.yml (and the vault), not defaulted here, since
+# they're specific to this one PoC deployment rather than generic role
+# defaults meant to be reused elsewhere.

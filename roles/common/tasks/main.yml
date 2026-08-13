@@ -1,0 +1,12 @@
+---
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ poc_timezone }}"
+
+- name: Ensure base packages are present
+  ansible.builtin.dnf:
+    name:
+      - curl
+      - vim
+      - ca-certificates
+    state: present

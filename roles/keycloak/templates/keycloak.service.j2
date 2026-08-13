@@ -1,0 +1,21 @@
+[Unit]
+Description=Keycloak (Podman container)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/podman rm -f {{ keycloak_container_name }}
+ExecStart=/usr/bin/podman run --rm --name {{ keycloak_container_name }} \
+  -p {{ keycloak_http_port }}:8080 \
+  -e KEYCLOAK_ADMIN={{ keycloak_admin_user }} \
+  -e KEYCLOAK_ADMIN_PASSWORD={{ keycloak_admin_password }} \
+  -e KC_HEALTH_ENABLED=true \
+  -v {{ keycloak_data_dir }}:/opt/keycloak/data:Z \
+  {{ keycloak_image }} start-dev
+ExecStop=/usr/bin/podman stop {{ keycloak_container_name }}
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
